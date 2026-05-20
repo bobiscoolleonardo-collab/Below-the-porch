@@ -1,18 +1,85 @@
 [gd_scene format=3 uid="uid://dc3uo1lv6kwhk"]
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_yp4wr"]
-size = Vector2(10, 10)
+[ext_resource type="PackedScene" uid="uid://bmo6b76vgnbyq" path="res://scenes/player.tscn" id="1_a02cp"]
+[ext_resource type="Shader" uid="uid://b21ph46u87fuk" path="res://shaders/sky.gdshader" id="1_go701"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_a02cp"]
-size = Vector3(10, 0.001, 10)
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_rwgxs"]
+noise_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4wyf3"]
+noise = SubResource("FastNoiseLite_rwgxs")
+seamless = true
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_k0juu"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_71j4m"]
+noise = SubResource("FastNoiseLite_k0juu")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qfnet"]
+shader = ExtResource("1_go701")
+shader_parameter/baseColor = Color(0.5416053, 0.3112365, 0.16703805, 1)
+shader_parameter/horizonColor = Color(0.46319747, 0.22460961, 0.05777941, 1)
+shader_parameter/horizonHeight = -0.2
+shader_parameter/rayleighCoefficient = 0.2
+shader_parameter/mieCoefficient = 0.0
+shader_parameter/mieEccentricity = 0.8
+shader_parameter/sunDiskScale = 0.2
+shader_parameter/sunSmoothing = 0.5
+shader_parameter/cloudTexture = SubResource("NoiseTexture2D_71j4m")
+shader_parameter/cloudCoverageTexture = SubResource("NoiseTexture2D_4wyf3")
+shader_parameter/sky_intensity = 1.0
+
+[sub_resource type="Sky" id="Sky_i7141"]
+sky_material = SubResource("ShaderMaterial_qfnet")
+
+[sub_resource type="Environment" id="Environment_fo5ed"]
+background_mode = 2
+sky = SubResource("Sky_i7141")
+ambient_light_source = 3
+reflected_light_source = 2
+tonemap_mode = 3
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_yp4wr"]
+size = Vector2(30, 30)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yp4wr"]
+size = Vector3(30, 0.001, 30)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rwgxs"]
+size = Vector3(5, 5, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4wyf3"]
+size = Vector3(5, 5, 1)
 
 [node name="World" type="Node3D" unique_id=1933754925]
 
-[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1928289312]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8294314, 0)
+[node name="Lighting" type="Node3D" parent="." unique_id=95366988]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6511605, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=706054136]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Lighting" unique_id=182372352]
+transform = Transform3D(0.95572114, -0.16513021, 0.24357568, 0, 0.8277177, 0.5611447, -0.29427385, -0.53629786, 0.7910673, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Lighting" unique_id=1579030100]
+environment = SubResource("Environment_fo5ed")
+
+[node name="floor" type="StaticBody3D" parent="." unique_id=1928289312]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="floor" unique_id=706054136]
 mesh = SubResource("PlaneMesh_yp4wr")
 
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="StaticBody3D" unique_id=784847702]
-shape = SubResource("BoxShape3D_a02cp")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="floor" unique_id=1554138813]
+shape = SubResource("BoxShape3D_yp4wr")
+
+[node name="Player" parent="." unique_id=293408663 instance=ExtResource("1_a02cp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00049972534, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=2040650422]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5004997, 4.607521)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=362502683]
+mesh = SubResource("BoxMesh_rwgxs")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1978011848]
+shape = SubResource("BoxShape3D_4wyf3")
