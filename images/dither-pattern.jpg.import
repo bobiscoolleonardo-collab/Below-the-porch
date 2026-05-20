@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://o4bf3olnuvs1"
-path.bptc="res://.godot/imported/qwantani_moon_noon_puresky_1k.exr-661d2e298ad3b21e6ca50cefca0d4103.bptc.ctex"
+uid="uid://der85hk7wbbuc"
+path.s3tc="res://.godot/imported/dither-pattern.jpg-6de0ccef68220c38ced0990c285c63e3.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://images/qwantani_moon_noon_puresky_1k.exr"
-dest_files=["res://.godot/imported/qwantani_moon_noon_puresky_1k.exr-661d2e298ad3b21e6ca50cefca0d4103.bptc.ctex"]
+source_file="res://images/dither-pattern.jpg"
+dest_files=["res://.godot/imported/dither-pattern.jpg-6de0ccef68220c38ced0990c285c63e3.s3tc.ctex"]
 
 [params]
 

@@ -21,18 +21,22 @@ size = Vector2(2, 2)
 render_priority = 0
 shader = ExtResource("12_3v2ag")
 shader_parameter/disable_shader = false
-shader_parameter/MAX_DEPTH = 1000.0
+shader_parameter/MAX_DEPTH = 100.0
 shader_parameter/shadows_enabled = true
 shader_parameter/highlights_enabled = true
-shader_parameter/shadow_strength = 0.6999999843536
-shader_parameter/highlight_strength = 0.999999977648
+shader_parameter/shadow_strength = 0.4
+shader_parameter/highlight_strength = 0.5999999865888
 shader_parameter/highlight_color = Color(1, 1, 1, 1)
 shader_parameter/shadow_color = Color(0, 0, 0, 1)
-shader_parameter/pixelSize = 4
+shader_parameter/pixelSize = 7
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cvnsp"]
 radius = 0.25
 height = 1.0
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3v2ag"]
+radius = 0.25
+height = 0.5
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dqkch"]
 shader = ExtResource("2_qhqgy")
@@ -42,27 +46,37 @@ shader_parameter/noise_strength = 0.1
 shader_parameter/enable_dither = true
 shader_parameter/dither_strength = 0.3
 shader_parameter/enable_glow = true
-shader_parameter/glow_strength = 0.4
+shader_parameter/glow_strength = 0.30000001425
 shader_parameter/glow_spread = 0.005
 shader_parameter/enable_vintage = true
 shader_parameter/vintage_strength = 0.30000001425
 
-[node name="Player" type="CharacterBody3D" unique_id=293408663 node_paths=PackedStringArray("hands", "neck", "camera", "camera_component")]
+[node name="Player" type="CharacterBody3D" unique_id=293408663 node_paths=PackedStringArray("hands", "neck", "camera", "camera_component", "Postprocess1", "default_collision", "crouch_collision", "crouch_ray")]
 script = ExtResource("1_v0iea")
 hands = NodePath("Hands")
 neck = NodePath("Neck")
 camera = NodePath("Neck/ShakePivot/Camera3D")
 camera_component = NodePath("Neck/CameraComponent")
+Postprocess1 = NodePath("PostProcess")
+default_collision = NodePath("Default")
+crouch_collision = NodePath("Crouch")
+crouch_ray = NodePath("Neck/CrouchRay")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1582193392]
+[node name="PostProcess" type="MeshInstance3D" parent="." unique_id=1582193392]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+visible = false
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_3v2ag")
 surface_material_override/0 = SubResource("ShaderMaterial_jej6c")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1580874368]
+[node name="Default" type="CollisionShape3D" parent="." unique_id=1580874368]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("CapsuleShape3D_cvnsp")
+
+[node name="Crouch" type="CollisionShape3D" parent="." unique_id=1692891924]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CapsuleShape3D_3v2ag")
+disabled = true
 
 [node name="Neck" type="Node3D" parent="." unique_id=1764775869]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7909133, 0)
@@ -115,6 +129,9 @@ camera = NodePath("../ShakePivot/Camera3D")
 hands = NodePath("../../Hands")
 shake_pivot = NodePath("../ShakePivot")
 metadata/_custom_type_script = "uid://n7nw1ub1715v"
+
+[node name="CrouchRay" type="RayCast3D" parent="Neck" unique_id=164132414]
+target_position = Vector3(0, 1, 0)
 
 [node name="Hands" type="Node3D" parent="." unique_id=1817125426]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.26294956, 0.67762476, -0.29985937)

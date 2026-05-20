@@ -4,14 +4,25 @@ extends CharacterBody3D
 @export var neck : Node3D
 @export var camera : Camera3D
 @export var camera_component : CameraComponent
+@export var Postprocess1 : MeshInstance3D
 
-var is_moving
-var movement_speed
-var is_sprinting
+@export var default_collision : CollisionShape3D
+@export var crouch_collision : CollisionShape3D
+@export var crouch_ray : RayCast3D
+var lerp_speed = 10.0
 
-var walk_speed = 3.0
-var sprint_speed = 5.0
-var jump_velocity = 4.5
+var is_moving : bool
+var movement_speed : float
+var is_sprinting : bool
+var is_crouching : bool
+
+var crouch_height : float = 0.5
+var stand_height : float = 1.0
+
+var walk_speed := 3.0
+var sprint_speed := 5.0
+var crouch_speed := 1.5
+var jump_velocity := 4.5
 
 var pitch := 0.0
 var sensitivity := 0.01
@@ -29,6 +40,8 @@ var landing_offset := 0.0
 
 func _ready() -> void:
 	global.player = self
+	await owner.ready
+	Postprocess1.visible = true
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -44,15 +57,29 @@ func _unhandled_input(event: InputEvent) -> void:
 			pitch = clamp(pitch, deg_to_rad(-89), deg_to_rad(89))
 			camera.rotation.x = pitch
 
+
 func _physics_process(delta: float) -> void:
 	is_moving = false
 	is_sprinting = false
 	
-	is_sprinting = Input.is_action_pressed("sprint")
-	movement_speed = sprint_speed if is_sprinting else walk_speed
+	if !is_crouching:
+		is_sprinting = Input.is_action_pressed("sprint")
+		movement_speed = sprint_speed if is_sprinting else walk_speed
 	
 	if not is_on_floor():
 		velocity += get_gravity() * delta
+	
+	if Input.is_action_pressed("crouch"):
+		default_collision.disabled = true
+		crouch_collision.disabled = false
+		neck.position.y = lerp(neck.position.y, 0.244, delta * lerp_speed)
+		movement_speed = crouch_speed
+		is_crouching = true
+	elif !crouch_ray.is_colliding():
+		is_crouching = false
+		neck.position.y = lerp(neck.position.y, 0.791, delta * lerp_speed)
+		default_collision.disabled = false
+		crouch_collision.disabled  = true
 	
 	if Input.is_action_just_pressed("space") and is_on_floor():
 		velocity.y = jump_velocity

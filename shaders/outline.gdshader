@@ -114,7 +114,7 @@ void fragment() {
 		final = mix(final, final_shadow_color, depth_diff);
 	}
 	//ALBEDO = original_color;
-	ALBEDO = vec3(normal_diff);
+	//ALBEDO = vec3(normal_diff);
 	//ALBEDO = vec3(depth_diff);
 	//ALBEDO = vec3(depth_diff + normal_diff);
 	//ALBEDO = texture(NORMAL_TEXTURE, uv).rgb * 2.0 - 1.0;
