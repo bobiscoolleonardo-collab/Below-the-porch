@@ -6,6 +6,9 @@ extends CharacterBody3D
 @export var camera_component : CameraComponent
 @export var Postprocess1 : MeshInstance3D
 
+@export var ray_cast : RayCast3D
+var current_interactable : Interactable = null
+
 @export var default_collision : CollisionShape3D
 @export var crouch_collision : CollisionShape3D
 @export var crouch_ray : RayCast3D
@@ -22,7 +25,7 @@ var stand_height : float = 1.0
 var walk_speed := 3.0
 var sprint_speed := 5.0
 var crouch_speed := 1.5
-var jump_velocity := 4.5
+var jump_velocity := 3.0
 
 var pitch := 0.0
 var sensitivity := 0.01
@@ -66,6 +69,10 @@ func _physics_process(delta: float) -> void:
 		is_sprinting = Input.is_action_pressed("sprint")
 		movement_speed = sprint_speed if is_sprinting else walk_speed
 	
+	if Input.is_action_just_pressed("interact"):
+		if current_interactable:
+			current_interactable.interact()
+	
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	
@@ -81,7 +88,7 @@ func _physics_process(delta: float) -> void:
 		default_collision.disabled = false
 		crouch_collision.disabled  = true
 	
-	if Input.is_action_just_pressed("space") and is_on_floor():
+	if Input.is_action_just_pressed("space") and is_on_floor() and !is_crouching:
 		velocity.y = jump_velocity
 	
 	if camera_component.active:
@@ -106,6 +113,28 @@ func _physics_process(delta: float) -> void:
 	target_roll = lerp(target_roll, 0.0, delta * 5.0)
 	move_and_slide()
 	camera_bob(delta)
+	_check_interactable()
+
+func _find_interactable(node: Node) -> Interactable:
+	while node:
+		if node is Interactable:
+			return node
+		node = node.get_parent()
+	return null
+
+func _check_interactable() -> void:
+	if ray_cast.is_colliding():
+		var collider = ray_cast.get_collider()
+		var interactable = _find_interactable(collider)
+		if interactable:
+			if interactable != current_interactable:
+				current_interactable = interactable
+				global.ui.set_interact_visible(true)
+			return
+
+	if current_interactable:
+		current_interactable = null
+		global.ui.set_interact_visible(false)
 
 func camera_bob(delta: float) -> void:
 	var on_floor_moving = is_on_floor() and is_moving

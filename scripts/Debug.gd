@@ -2,9 +2,6 @@ extends PanelContainer
 
 @export var property_container: VBoxContainer
 
-#var property
-var frames_per_sec : String
-
 func _ready():
 	global.debug = self
 	visible = false 

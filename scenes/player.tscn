@@ -4,14 +4,23 @@
 [ext_resource type="Script" uid="uid://n7nw1ub1715v" path="res://scripts/camera_component.gd" id="2_g2els"]
 [ext_resource type="Shader" uid="uid://cas22wyv1obfn" path="res://shaders/dither.gdshader" id="2_qhqgy"]
 [ext_resource type="Theme" uid="uid://cgfyu5a15lk7l" path="res://themes/Debug.tres" id="3_d2wvv"]
+[ext_resource type="Script" uid="uid://d1g7l2667sygm" path="res://scripts/ui.gd" id="3_i4ail"]
 [ext_resource type="Script" uid="uid://buvya81copmpy" path="res://scripts/Debug.gd" id="4_3v2ag"]
 [ext_resource type="Script" uid="uid://dhvcrghyj05u7" path="res://scripts/PlayerStates/StateMachine.gd" id="4_ur7pv"]
 [ext_resource type="Script" uid="uid://825morih6jb3" path="res://scripts/PlayerStates/idle.gd" id="5_y4r1p"]
+[ext_resource type="Script" uid="uid://c5bwwm5oj8eif" path="res://scripts/inventory.gd" id="6_4r5pv"]
 [ext_resource type="Script" uid="uid://dx58k5ortwf80" path="res://scripts/PlayerStates/walking.gd" id="6_d2wvv"]
+[ext_resource type="Texture2D" uid="uid://boiesk01sihd8" path="res://images/Inventory/Inner.png" id="6_qfm1y"]
 [ext_resource type="Script" uid="uid://bg5ghk3ofs4g8" path="res://scripts/PlayerStates/running.gd" id="7_3v2ag"]
+[ext_resource type="Texture2D" uid="uid://cccaxe4qj3juv" path="res://images/Inventory/Innerglow.png" id="7_fulsm"]
+[ext_resource type="Texture2D" uid="uid://dpsr5t07qqkfj" path="res://images/Inventory/Ring.png" id="8_4r5pv"]
 [ext_resource type="Script" uid="uid://bqo2v0kxvqw61" path="res://scripts/PlayerStates/jumping.gd" id="8_jej6c"]
+[ext_resource type="Texture2D" uid="uid://34o0v8slqstg" path="res://images/Inventory/Q.png" id="9_60mlk"]
 [ext_resource type="Script" uid="uid://bo0w5qunldvo1" path="res://scripts/PlayerStates/falling.gd" id="9_f1ej7"]
+[ext_resource type="Texture2D" uid="uid://b54j6gi2vrx8q" path="res://images/Inventory/E.png" id="10_fulsm"]
 [ext_resource type="Shader" uid="uid://dtwpsl6kpgs0w" path="res://shaders/outline.gdshader" id="12_3v2ag"]
+[ext_resource type="Texture2D" uid="uid://c6bw6mb7pg8ku" path="res://images/Hand1.png" id="12_60mlk"]
+[ext_resource type="Script" uid="uid://bq5h7ie4ygtsu" path="res://scripts/PlayerStates/crouching.gd" id="13_jej6c"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_3v2ag"]
 flip_faces = true
@@ -41,7 +50,7 @@ height = 0.5
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dqkch"]
 shader = ExtResource("2_qhqgy")
 shader_parameter/pixel_resolution = 360.00001406
-shader_parameter/color_steps = 16
+shader_parameter/color_steps = 20
 shader_parameter/noise_strength = 0.1
 shader_parameter/enable_dither = true
 shader_parameter/dither_strength = 0.3
@@ -51,13 +60,176 @@ shader_parameter/glow_spread = 0.005
 shader_parameter/enable_vintage = true
 shader_parameter/vintage_strength = 0.30000001425
 
-[node name="Player" type="CharacterBody3D" unique_id=293408663 node_paths=PackedStringArray("hands", "neck", "camera", "camera_component", "Postprocess1", "default_collision", "crouch_collision", "crouch_ray")]
+[sub_resource type="Animation" id="Animation_fulsm"]
+resource_name = "Equip Left"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Left hand:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0.5, 0.5), Vector2(0.7, 0.7)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Left hand:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(521, 593), Vector2(507, 574)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Left hand/Ring:modulate")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.9254902, 0.49019608, 0, 1), Color(0, 0.50980395, 0.81960785, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_4r5pv"]
+resource_name = "Equip Right"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Right hand:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0.5, 0.5), Vector2(0.7, 0.7)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Right hand:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(608, 586), Vector2(618, 559)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Right hand/Ring:modulate")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.92668676, 0.49032825, 1.92523e-07, 1), Color(0, 0.50980395, 0.81960785, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_60mlk"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Left hand:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.5, 0.5)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Left hand:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(521, 593)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Left hand/Ring:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.9254902, 0.49019608, 0, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Right hand:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.5, 0.5)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Right hand:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(608, 586)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Right hand/Ring:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.92668676, 0.49032825, 1.92523e-07, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_i4ail"]
+_data = {
+&"Equip Left": SubResource("Animation_fulsm"),
+&"Equip Right": SubResource("Animation_4r5pv"),
+&"RESET": SubResource("Animation_60mlk")
+}
+
+[node name="Player" type="CharacterBody3D" unique_id=293408663 node_paths=PackedStringArray("hands", "neck", "camera", "camera_component", "Postprocess1", "ray_cast", "default_collision", "crouch_collision", "crouch_ray")]
 script = ExtResource("1_v0iea")
 hands = NodePath("Hands")
 neck = NodePath("Neck")
 camera = NodePath("Neck/ShakePivot/Camera3D")
 camera_component = NodePath("Neck/CameraComponent")
 Postprocess1 = NodePath("PostProcess")
+ray_cast = NodePath("Neck/ShakePivot/Camera3D/InteractRay")
 default_collision = NodePath("Default")
 crouch_collision = NodePath("Crouch")
 crouch_ray = NodePath("Neck/CrouchRay")
@@ -86,7 +258,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7909133, 0)
 [node name="Camera3D" type="Camera3D" parent="Neck/ShakePivot" unique_id=2022465561]
 near = 0.001
 
-[node name="UI" type="Control" parent="Neck/ShakePivot/Camera3D" unique_id=2074184866]
+[node name="UI" type="Control" parent="Neck/ShakePivot/Camera3D" unique_id=2074184866 node_paths=PackedStringArray("interact_icon")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -94,6 +266,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("3_i4ail")
+interact_icon = NodePath("InteractIcon")
 
 [node name="Dither" type="ColorRect" parent="Neck/ShakePivot/Camera3D/UI" unique_id=220519985]
 material = SubResource("ShaderMaterial_dqkch")
@@ -104,6 +278,23 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="InteractIcon" type="TextureRect" parent="Neck/ShakePivot/Camera3D/UI" unique_id=577071811]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -41.0
+offset_top = -39.0
+offset_right = 87.0
+offset_bottom = 89.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("12_60mlk")
 
 [node name="debugpanel" type="PanelContainer" parent="Neck/ShakePivot/Camera3D/UI" unique_id=1091042648 node_paths=PackedStringArray("property_container")]
 custom_minimum_size = Vector2(200, 0)
@@ -121,6 +312,220 @@ layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Neck/ShakePivot/Camera3D/UI/debugpanel/MarginContainer" unique_id=599422734]
 layout_mode = 2
+
+[node name="Inventory" type="Control" parent="Neck/ShakePivot/Camera3D/UI" unique_id=52835829 node_paths=PackedStringArray("left_hand", "left_item", "right_hand", "right_item", "left_animation", "right_animation")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("6_4r5pv")
+left_hand = NodePath("Left hand")
+left_item = NodePath("Left hand/Inner/Item")
+right_hand = NodePath("Right hand")
+right_item = NodePath("Right hand/Inner/Item")
+left_animation = NodePath("Left hand/Left")
+right_animation = NodePath("Right hand/Right")
+
+[node name="Left hand" type="Control" parent="Neck/ShakePivot/Camera3D/UI/Inventory" unique_id=1737945268]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -55.0
+offset_top = -55.0
+offset_right = -44.998413
+offset_bottom = -45.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.5, 0.5)
+
+[node name="Inner" type="TextureRect" parent="Neck/ShakePivot/Camera3D/UI/Inventory/Left hand" unique_id=402548764]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -85.0
+offset_top = -85.0
+offset_right = 85.0
+offset_bottom = 85.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_qfm1y")
+
+[node name="Item" type="TextureRect" parent="Neck/ShakePivot/Camera3D/UI/Inventory/Left hand/Inner" unique_id=593329327]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Innerglow" type="TextureRect" parent="Neck/ShakePivot/Camera3D/UI/Inventory/Left hand" unique_id=280798149]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -85.0
+offset_top = -85.0
+offset_right = 85.0
+offset_bottom = 85.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_fulsm")
+
+[node name="Ring" type="TextureRect" parent="Neck/ShakePivot/Camera3D/UI/Inventory/Left hand" unique_id=1175184665]
+modulate = Color(0.9254902, 0.49019608, 0, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -85.0
+offset_top = -85.0
+offset_right = 85.0
+offset_bottom = 85.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_4r5pv")
+
+[node name="Q" type="TextureRect" parent="Neck/ShakePivot/Camera3D/UI/Inventory/Left hand" unique_id=926034004]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -43.000004
+offset_top = 32.999985
+offset_right = 127.0
+offset_bottom = 202.99998
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("9_60mlk")
+
+[node name="Left" type="AnimationPlayer" parent="Neck/ShakePivot/Camera3D/UI/Inventory/Left hand" unique_id=190865114]
+root_node = NodePath("../..")
+libraries/ = SubResource("AnimationLibrary_i4ail")
+
+[node name="Right hand" type="Control" parent="Neck/ShakePivot/Camera3D/UI/Inventory" unique_id=1628445336]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = -62.0
+offset_right = 72.0
+offset_bottom = -22.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.5, 0.5)
+
+[node name="Inner" type="TextureRect" parent="Neck/ShakePivot/Camera3D/UI/Inventory/Right hand" unique_id=559418897]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -85.0
+offset_top = -85.0
+offset_right = 85.0
+offset_bottom = 85.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_qfm1y")
+
+[node name="Item" type="TextureRect" parent="Neck/ShakePivot/Camera3D/UI/Inventory/Right hand/Inner" unique_id=2050082246]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Innerglow" type="TextureRect" parent="Neck/ShakePivot/Camera3D/UI/Inventory/Right hand" unique_id=1021032539]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -85.0
+offset_top = -85.0
+offset_right = 85.0
+offset_bottom = 85.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_fulsm")
+
+[node name="Ring" type="TextureRect" parent="Neck/ShakePivot/Camera3D/UI/Inventory/Right hand" unique_id=437054256]
+modulate = Color(0.92668676, 0.49032825, 1.92523e-07, 1)
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -85.0
+offset_top = -85.0
+offset_right = 85.0
+offset_bottom = 85.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_4r5pv")
+
+[node name="E" type="TextureRect" parent="Neck/ShakePivot/Camera3D/UI/Inventory/Right hand" unique_id=703169671]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -43.000004
+offset_top = 32.999985
+offset_right = 127.0
+offset_bottom = 202.99998
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("10_fulsm")
+
+[node name="Right" type="AnimationPlayer" parent="Neck/ShakePivot/Camera3D/UI/Inventory/Right hand" unique_id=1239660158]
+root_node = NodePath("../..")
+libraries/ = SubResource("AnimationLibrary_i4ail")
+
+[node name="InteractRay" type="RayCast3D" parent="Neck/ShakePivot/Camera3D" unique_id=641711918]
+target_position = Vector3(0, 0, -1.5)
 
 [node name="CameraComponent" type="Node" parent="Neck" unique_id=79813359 node_paths=PackedStringArray("neck", "camera", "hands", "shake_pivot")]
 script = ExtResource("2_g2els")
@@ -159,4 +564,8 @@ metadata/_custom_type_script = "uid://bqo2v0kxvqw61"
 
 [node name="Falling" type="Node" parent="StateMachine" unique_id=2058319238]
 script = ExtResource("9_f1ej7")
+metadata/_custom_type_script = "uid://bo0w5qunldvo1"
+
+[node name="Crouching" type="Node" parent="StateMachine" unique_id=2048534855]
+script = ExtResource("13_jej6c")
 metadata/_custom_type_script = "uid://bo0w5qunldvo1"

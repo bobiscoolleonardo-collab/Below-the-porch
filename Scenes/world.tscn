@@ -3,6 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://bmo6b76vgnbyq" path="res://scenes/player.tscn" id="1_a02cp"]
 [ext_resource type="Shader" uid="uid://b21ph46u87fuk" path="res://shaders/sky.gdshader" id="1_go701"]
 [ext_resource type="Shader" uid="uid://cvsyvi30b6mw0" path="res://shaders/clouds.gdshader" id="2_4wyf3"]
+[ext_resource type="Script" uid="uid://4evea4jw1e32" path="res://scripts/Test.gd" id="4_k0juu"]
+[ext_resource type="Shader" uid="uid://5vv558sc04p2" path="res://shaders/highlight.gdshader" id="5_71j4m"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_rwgxs"]
 noise_type = 0
@@ -58,7 +60,7 @@ shader_parameter/cloud_noise = SubResource("NoiseTexture2D_qfnet")
 shader_parameter/cloud_color = Color(1, 0.86, 0.72, 1)
 shader_parameter/cloud_shadow_color = Color(0.55, 0.36, 0.32, 1)
 shader_parameter/sun_direction = Vector3(0.4, 0.7, 0.25)
-shader_parameter/coverage = 0.63999998569472
+shader_parameter/coverage = 0.45
 shader_parameter/softness = 0.16
 shader_parameter/opacity = 0.1499999966472
 shader_parameter/scale = 5.999999865888
@@ -117,10 +119,23 @@ size = Vector3(5, 5, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_4wyf3"]
 size = Vector3(5, 5, 1)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4wyf3"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4mrxx"]
+render_priority = 0
+shader = ExtResource("5_71j4m")
+shader_parameter/shine_color = Color(1, 1, 1, 1)
+shader_parameter/shine_speed = 4.00000019
+shader_parameter/shine_width = 0.2000000095
+shader_parameter/cycle_interval = 5.0000002375
+shader_parameter/angle_fade = 1.0
+shader_parameter/x_direction = -0.5999999810000001
+shader_parameter/y_direction = 0.0
+shader_parameter/z_direction = 1.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_71j4m"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qfnet"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_4wyf3"]
-material = SubResource("ShaderMaterial_4wyf3")
 size = Vector3(5, 0.1, 2)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_k0juu"]
@@ -159,7 +174,7 @@ mesh = SubResource("PlaneMesh_yp4wr")
 shape = SubResource("BoxShape3D_yp4wr")
 
 [node name="Player" parent="." unique_id=293408663 instance=ExtResource("1_a02cp")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00049972534, 0)
+transform = Transform3D(-0.99999994, 0, -8.742277e-08, 0, 1, 0, 8.742277e-08, 0, -0.99999994, 0, 0.00049972534, 0)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=2040650422]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3312464, 4.607521)
@@ -169,6 +184,17 @@ mesh = SubResource("BoxMesh_rwgxs")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1978011848]
 shape = SubResource("BoxShape3D_4wyf3")
+
+[node name="StaticBody3D3" type="StaticBody3D" parent="." unique_id=1395139381]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5004997, -2.196416)
+script = ExtResource("4_k0juu")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D3" unique_id=1464426831]
+material_overlay = SubResource("ShaderMaterial_4mrxx")
+mesh = SubResource("BoxMesh_71j4m")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3" unique_id=1517390036]
+shape = SubResource("BoxShape3D_qfnet")
 
 [node name="StaticBody3D2" type="StaticBody3D" parent="." unique_id=126750225]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3312464, 3.6090412)
