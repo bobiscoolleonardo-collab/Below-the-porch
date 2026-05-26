@@ -9,7 +9,7 @@ uniform float cycle_interval : hint_range(0, 100) = 1.0;
 uniform float angle_fade : hint_range(0, 1) = 1.0;
 
 group_uniforms HighlightDirection;
-uniform float x_direction : hint_range(-1, 1) = 0.0;
+uniform float x_direction : hint_range(-1, 1) = -0.6;
 uniform float y_direction : hint_range(-1, 1) = 0.0;
 uniform float z_direction : hint_range(-1, 1) = 1.0;
 

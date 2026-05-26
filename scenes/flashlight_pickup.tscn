@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://dxffaadv72i7l"]
+
+[ext_resource type="Script" uid="uid://b2c1qywf01wbt" path="res://scripts/Interactables/flashlight/flashlight_pickup.gd" id="1_wexaj"]
+[ext_resource type="Texture2D" uid="uid://bwjskpi0ry8mi" path="res://images/flashlight/Flashlight.png" id="2_0oats"]
+[ext_resource type="PackedScene" uid="uid://b12vepq6dtqm6" path="res://scenes/flashlight.tscn" id="3_lvbso"]
+[ext_resource type="Shader" uid="uid://5vv558sc04p2" path="res://shaders/highlight.gdshader" id="3_v5nh6"]
+[ext_resource type="ArrayMesh" uid="uid://by3u6qnqdmwjf" path="res://Models/flashlight/Flashlight.tres" id="4_p6yi3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vtub4"]
+render_priority = 0
+shader = ExtResource("3_v5nh6")
+shader_parameter/shine_color = Color(1, 1, 1, 1)
+shader_parameter/shine_speed = 3.0000001425
+shader_parameter/shine_width = 0.400000019
+shader_parameter/cycle_interval = 6.000000285
+shader_parameter/angle_fade = 1.0
+shader_parameter/x_direction = 4.7499999933364734e-08
+shader_parameter/y_direction = -1.0
+shader_parameter/z_direction = 1.0
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_lvbso"]
+points = PackedVector3Array(3.2341328, 16.6009, 0.94423574, -3.06293, 13.165242, -1.3450451, -1.917057, -17.744925, -1.917057, -1.3450451, -17.744925, 2.088876, -0.77241665, 18.31873, 3.2341328, 1.5162477, 18.31873, -3.06293, 2.088876, -17.744925, -1.3450451, 1.5162477, -17.744925, 2.088876, -3.06293, 18.31873, 1.5162477, -1.3450451, 18.31873, -3.06293, 2.088876, 18.31873, 2.6615045, 3.2341328, 18.31873, -0.77241665, -1.917057, -18.31873, 1.5162477, 1.5162477, -18.31873, -1.917057, 2.088876, -17.744925, 1.5162477, 0.94423574, 15.45329, 3.2341328, -2.4896855, 16.6009, -2.4896855, -1.3450451, 13.165242, -3.06293, -1.917057, 13.165242, 2.6615045, 2.6615045, 13.165242, -1.917057, 3.2341328, 13.739047, -0.77241665, 1.5162477, 13.739047, -3.06293, -3.06293, 13.739047, 1.5162477, 2.6615045, 13.165242, 2.088876, -0.77241665, 13.739047, 3.2341328, -3.06293, 18.31873, -1.3450451, 0.94423574, -18.31873, 2.088876, 2.088876, 13.165242, 2.6615045, -1.3450451, -18.31873, -1.917057, 2.088876, -18.31873, 0.94423574, 3.2341328, 13.739047, 0.37160733, 2.6615045, 18.31873, 2.088876)
+
+[node name="Flashlight_Pickup" type="Node3D" unique_id=141800099]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+script = ExtResource("1_wexaj")
+item_icon = ExtResource("2_0oats")
+held_scene = ExtResource("3_lvbso")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1582406576]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=728515571]
+transform = Transform3D(0.015, 0, 0, 0, 0.01, 0, 0, 0, 0.015, 0, 0, 0)
+material_overlay = SubResource("ShaderMaterial_vtub4")
+mesh = ExtResource("4_p6yi3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=217860838]
+transform = Transform3D(0.015, 0, 0, 0, 0.01, 0, 0, 0, 0.015, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_lvbso")
+
+[node name="Spawn" type="Marker3D" parent="." unique_id=216002015]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5273426e-09, -0.034941524)

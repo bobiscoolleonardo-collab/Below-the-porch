@@ -1,0 +1,105 @@
+[gd_scene format=3 uid="uid://b12vepq6dtqm6"]
+
+[ext_resource type="Texture2D" uid="uid://befjj4ffasxeh" path="res://images/flashlight/FlashlightHold.png" id="1_5higp"]
+[ext_resource type="Script" uid="uid://dhxvbdsgamvna" path="res://scripts/Interactables/flashlight/flashlight.gd" id="1_17r2w"]
+[ext_resource type="Texture2D" uid="uid://sky15fu2m3ak" path="res://images/flashlight/FlashlightLightTexture.png" id="2_ocaxa"]
+[ext_resource type="Shader" uid="uid://bcjy7ln6x08kg" path="res://shaders/sprite_light.gdshader" id="2_x32u1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fhhjx"]
+render_priority = 10
+shader = ExtResource("2_x32u1")
+shader_parameter/sprite_texture = ExtResource("1_5higp")
+shader_parameter/atlas_size = Vector2(1, 1)
+shader_parameter/highlight_amount = 0.05
+
+[sub_resource type="Animation" id="Animation_17r2w"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Right:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.4243108, 0.0044072866, -0.21263233)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Left:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.43123388, 0.004, -0.21274352)]
+}
+
+[sub_resource type="Animation" id="Animation_wxoxw"]
+resource_name = "equip"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Right:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.4243108, -0.60972834, -0.21263233), Vector3(0.4243108, 0.0044072866, -0.21263233)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Left:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-0.43123388, -0.6101356, -0.21274352), Vector3(-0.43123388, 0.004, -0.21274352)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fhhjx"]
+_data = {
+&"RESET": SubResource("Animation_17r2w"),
+&"equip": SubResource("Animation_wxoxw")
+}
+
+[node name="Flashlight" type="Node3D" unique_id=1456427065]
+script = ExtResource("1_17r2w")
+walk_bob_speed = 5.0
+
+[node name="Right" type="Sprite3D" parent="." unique_id=1503388592]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4243108, 0.0044072866, -0.21263233)
+material_override = SubResource("ShaderMaterial_fhhjx")
+cast_shadow = 0
+pixel_size = 0.0012
+texture = ExtResource("1_5higp")
+
+[node name="Left" type="Sprite3D" parent="." unique_id=443298181]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.43123388, 0.004, -0.21274352)
+material_override = SubResource("ShaderMaterial_fhhjx")
+cast_shadow = 0
+flip_h = true
+pixel_size = 0.0012
+texture = ExtResource("1_5higp")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=1269247515]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.009584665, 0.251, 0.38407496)
+visible = false
+light_projector = ExtResource("2_ocaxa")
+shadow_enabled = true
+spot_range = 9.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=373636606]
+libraries/ = SubResource("AnimationLibrary_fhhjx")
+
+[node name="Sound" type="AudioStreamPlayer3D" parent="." unique_id=687657163]

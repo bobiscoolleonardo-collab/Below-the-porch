@@ -21,6 +21,7 @@
 [ext_resource type="Shader" uid="uid://dtwpsl6kpgs0w" path="res://shaders/outline.gdshader" id="12_3v2ag"]
 [ext_resource type="Texture2D" uid="uid://c6bw6mb7pg8ku" path="res://images/Hand1.png" id="12_60mlk"]
 [ext_resource type="Script" uid="uid://bq5h7ie4ygtsu" path="res://scripts/PlayerStates/crouching.gd" id="13_jej6c"]
+[ext_resource type="Script" uid="uid://8ba4uppqwtho" path="res://scripts/Footsteps.gd" id="15_a38lo"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_3v2ag"]
 flip_faces = true
@@ -222,13 +223,23 @@ _data = {
 &"RESET": SubResource("Animation_60mlk")
 }
 
-[node name="Player" type="CharacterBody3D" unique_id=293408663 node_paths=PackedStringArray("hands", "neck", "camera", "camera_component", "Postprocess1", "ray_cast", "default_collision", "crouch_collision", "crouch_ray")]
+[sub_resource type="SphereShape3D" id="SphereShape3D_i4ail"]
+radius = 0.1
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_a38lo"]
+radius = 0.1
+
+[node name="Player" type="CharacterBody3D" unique_id=293408663 node_paths=PackedStringArray("player", "hands", "neck", "camera", "drop_item", "camera_component", "Postprocess1", "start", "end", "ray_cast", "default_collision", "crouch_collision", "crouch_ray")]
 script = ExtResource("1_v0iea")
-hands = NodePath("Hands")
+player = NodePath("Sounds/Sound")
+hands = NodePath("Neck/ShakePivot/Camera3D/Hands")
 neck = NodePath("Neck")
 camera = NodePath("Neck/ShakePivot/Camera3D")
+drop_item = NodePath("DropItem")
 camera_component = NodePath("Neck/CameraComponent")
 Postprocess1 = NodePath("PostProcess")
+start = NodePath("Neck/ShakePivot/Camera3D/SpringArm3D/Start")
+end = NodePath("DropItem/Thing/End")
 ray_cast = NodePath("Neck/ShakePivot/Camera3D/InteractRay")
 default_collision = NodePath("Default")
 crouch_collision = NodePath("Crouch")
@@ -313,7 +324,7 @@ layout_mode = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="Neck/ShakePivot/Camera3D/UI/debugpanel/MarginContainer" unique_id=599422734]
 layout_mode = 2
 
-[node name="Inventory" type="Control" parent="Neck/ShakePivot/Camera3D/UI" unique_id=52835829 node_paths=PackedStringArray("left_hand", "left_item", "right_hand", "right_item", "left_animation", "right_animation")]
+[node name="Inventory" type="Control" parent="Neck/ShakePivot/Camera3D/UI" unique_id=52835829 node_paths=PackedStringArray("left_item", "right_item", "left_animation", "right_animation", "socket")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -322,12 +333,11 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("6_4r5pv")
-left_hand = NodePath("Left hand")
-left_item = NodePath("Left hand/Inner/Item")
-right_hand = NodePath("Right hand")
-right_item = NodePath("Right hand/Inner/Item")
+left_item = NodePath("Left hand/Item")
+right_item = NodePath("Right hand/Item")
 left_animation = NodePath("Left hand/Left")
 right_animation = NodePath("Right hand/Right")
+socket = NodePath("../../Hands")
 
 [node name="Left hand" type="Control" parent="Neck/ShakePivot/Camera3D/UI/Inventory" unique_id=1737945268]
 custom_minimum_size = Vector2(10, 10)
@@ -359,20 +369,6 @@ offset_bottom = 85.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("6_qfm1y")
-
-[node name="Item" type="TextureRect" parent="Neck/ShakePivot/Camera3D/UI/Inventory/Left hand/Inner" unique_id=593329327]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -50.0
-offset_top = -50.0
-offset_right = 50.0
-offset_bottom = 50.0
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="Innerglow" type="TextureRect" parent="Neck/ShakePivot/Camera3D/UI/Inventory/Left hand" unique_id=280798149]
 layout_mode = 1
@@ -422,6 +418,21 @@ grow_vertical = 2
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("9_60mlk")
 
+[node name="Item" type="TextureRect" parent="Neck/ShakePivot/Camera3D/UI/Inventory/Left hand" unique_id=593329327]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
 [node name="Left" type="AnimationPlayer" parent="Neck/ShakePivot/Camera3D/UI/Inventory/Left hand" unique_id=190865114]
 root_node = NodePath("../..")
 libraries/ = SubResource("AnimationLibrary_i4ail")
@@ -455,21 +466,6 @@ offset_bottom = 85.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("6_qfm1y")
-
-[node name="Item" type="TextureRect" parent="Neck/ShakePivot/Camera3D/UI/Inventory/Right hand/Inner" unique_id=2050082246]
-custom_minimum_size = Vector2(30, 30)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -50.0
-offset_top = -50.0
-offset_right = 50.0
-offset_bottom = 50.0
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="Innerglow" type="TextureRect" parent="Neck/ShakePivot/Camera3D/UI/Inventory/Right hand" unique_id=1021032539]
 layout_mode = 1
@@ -520,26 +516,76 @@ grow_vertical = 2
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("10_fulsm")
 
+[node name="Item" type="TextureRect" parent="Neck/ShakePivot/Camera3D/UI/Inventory/Right hand" unique_id=2050082246]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
 [node name="Right" type="AnimationPlayer" parent="Neck/ShakePivot/Camera3D/UI/Inventory/Right hand" unique_id=1239660158]
 root_node = NodePath("../..")
 libraries/ = SubResource("AnimationLibrary_i4ail")
 
 [node name="InteractRay" type="RayCast3D" parent="Neck/ShakePivot/Camera3D" unique_id=641711918]
 target_position = Vector3(0, 0, -1.5)
+debug_shape_custom_color = Color(0, 0, 0, 0)
+
+[node name="Hands" type="Node3D" parent="Neck/ShakePivot/Camera3D" unique_id=1817125426]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.13349432, -0.26819557)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="Neck/ShakePivot/Camera3D" unique_id=1585392887]
+shape = SubResource("SphereShape3D_i4ail")
+spring_length = -0.7
+
+[node name="Start" type="Marker3D" parent="Neck/ShakePivot/Camera3D/SpringArm3D" unique_id=827186336 groups=["Start"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5)
 
 [node name="CameraComponent" type="Node" parent="Neck" unique_id=79813359 node_paths=PackedStringArray("neck", "camera", "hands", "shake_pivot")]
 script = ExtResource("2_g2els")
 neck = NodePath("..")
 camera = NodePath("../ShakePivot/Camera3D")
-hands = NodePath("../../Hands")
+hands = NodePath("../ShakePivot/Camera3D/Hands")
 shake_pivot = NodePath("../ShakePivot")
 metadata/_custom_type_script = "uid://n7nw1ub1715v"
 
 [node name="CrouchRay" type="RayCast3D" parent="Neck" unique_id=164132414]
 target_position = Vector3(0, 1, 0)
 
-[node name="Hands" type="Node3D" parent="." unique_id=1817125426]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.26294956, 0.67762476, -0.29985937)
+[node name="Sounds" type="Node3D" parent="." unique_id=547813628]
+
+[node name="Footsteps" type="Node3D" parent="Sounds" unique_id=1931361036 node_paths=PackedStringArray("raycast", "dynamic_footsteps")]
+script = ExtResource("15_a38lo")
+raycast = NodePath("Footstepraycast")
+dynamic_footsteps = NodePath("AudioStreamPlayer3D")
+pitch_min = 0.8
+pitch_max = 1.2
+
+[node name="Footstepraycast" type="RayCast3D" parent="Sounds/Footsteps" unique_id=1496596127]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12837803, 0)
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Sounds/Footsteps" unique_id=786383481]
+
+[node name="Sound" type="AudioStreamPlayer3D" parent="Sounds" unique_id=1727731423]
+
+[node name="DropItem" type="SpringArm3D" parent="." unique_id=1888523907]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7909133, 0)
+shape = SubResource("SphereShape3D_a38lo")
+spring_length = -0.7
+
+[node name="Thing" type="Node3D" parent="DropItem" unique_id=1302754831]
+
+[node name="End" type="Marker3D" parent="DropItem/Thing" unique_id=1477440980 groups=["End"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4, 0)
 
 [node name="StateMachine" type="Node" parent="." unique_id=1012681365 node_paths=PackedStringArray("current_state")]
 script = ExtResource("4_ur7pv")

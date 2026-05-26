@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode unshaded;
+render_mode unshaded, depth_prepass_alpha;
 
 // MIT License. Made by Leo Peltola. Adapted by ARez.
 // Inspired by https://threejs.org/examples/webgl_postprocessing_pixel.html

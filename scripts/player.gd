@@ -1,10 +1,16 @@
 extends CharacterBody3D
 
+@export var player : AudioStreamPlayer3D
+
 @export var hands : Node3D
 @export var neck : Node3D
 @export var camera : Camera3D
+@export var drop_item : SpringArm3D
 @export var camera_component : CameraComponent
 @export var Postprocess1 : MeshInstance3D
+
+@export var start : Marker3D
+@export var end : Marker3D
 
 @export var ray_cast : RayCast3D
 var current_interactable : Interactable = null
@@ -46,6 +52,14 @@ func _ready() -> void:
 	await owner.ready
 	Postprocess1.visible = true
 
+func play_sound(sound = null, volume = 0.0):
+	player.stream = sound
+	player.volume_db = volume
+	player.pitch_scale = randf_range(0.8, 1.2)
+	player.play()
+	await player.finished
+	player.stream = null
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -55,7 +69,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event is InputEventMouseMotion:
 			mouse_delta += event.relative
 			neck.rotate_y(-event.relative.x * sensitivity)
-			hands.rotate_y(-event.relative.x * sensitivity)
+			drop_item.rotate_y(-event.relative.x * sensitivity)
 			pitch -= event.relative.y * sensitivity
 			pitch = clamp(pitch, deg_to_rad(-89), deg_to_rad(89))
 			camera.rotation.x = pitch
@@ -70,8 +84,7 @@ func _physics_process(delta: float) -> void:
 		movement_speed = sprint_speed if is_sprinting else walk_speed
 	
 	if Input.is_action_just_pressed("interact"):
-		if current_interactable:
-			current_interactable.interact()
+		_try_interact()
 	
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -116,10 +129,12 @@ func _physics_process(delta: float) -> void:
 	_check_interactable()
 
 func _find_interactable(node: Node) -> Interactable:
-	while node:
-		if node is Interactable:
+	while is_instance_valid(node):
+		if node is Interactable and not node.is_queued_for_deletion():
 			return node
+
 		node = node.get_parent()
+
 	return null
 
 func _check_interactable() -> void:
@@ -135,6 +150,22 @@ func _check_interactable() -> void:
 	if current_interactable:
 		current_interactable = null
 		global.ui.set_interact_visible(false)
+
+func _try_interact() -> void:
+	if not is_instance_valid(current_interactable):
+		_clear_interactable()
+		return
+
+	var interacted := current_interactable
+	interacted.interact()
+
+	if not is_instance_valid(interacted) or interacted.is_queued_for_deletion():
+		_clear_interactable()
+
+
+func _clear_interactable() -> void:
+	current_interactable = null
+	global.ui.set_interact_visible(false)
 
 func camera_bob(delta: float) -> void:
 	var on_floor_moving = is_on_floor() and is_moving
