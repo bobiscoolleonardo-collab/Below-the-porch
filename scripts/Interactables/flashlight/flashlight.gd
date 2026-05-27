@@ -1,16 +1,13 @@
-# HeldItem.gd
 extends Node3D
 
 @onready var left_side: Node3D = $Left
 @onready var right_side: Node3D = $Right
-@onready var light: SpotLight3D = $SpotLight3D
-@onready var animation : AnimationPlayer = $AnimationPlayer
-@onready var sound : AudioStreamPlayer3D = $Sound
+var light: SpotLight3D
+@onready var animation: AnimationPlayer = $AnimationPlayer
+@onready var sound: AudioStreamPlayer3D = $Sound
 
-var base_position := Vector3.ZERO
-var walk_time := 0.0
-var walk_position := Vector3.ZERO
-var walk_rotation := Vector3.ZERO
+var on := preload("res://sounds/Flashlight/Flashlight On.wav")
+var off := preload("res://sounds/Flashlight/Flashlight Off.wav")
 
 @export var walk_bob_speed := 8.0
 @export var walk_bob_amount := 0.035
@@ -19,44 +16,58 @@ var walk_rotation := Vector3.ZERO
 @export var walk_smooth := 10.0
 @export var walk_speed_for_full_bob := 5.0
 
-var on := preload("res://sounds/Flashlight/Flashlight On.wav")
-var off := preload("res://sounds/Flashlight/Flashlight Off.wav")
-
-
-var parent: Node3D
-
-var base_rotation := Vector3.ZERO
-var last_camera_rotation := Vector3.ZERO
-var sway_rotation := Vector3.ZERO
-
 @export var sway_amount := 5.0
 @export var max_sway := 0.1
 @export var sway_smooth := 12.0
 
-var sway_speed := 50.0
+var player: CharacterBody3D
+var parent: Node3D
+
+var equipped_side := ""
 var use_lag := false
+var light_on := false
 
-var equipped_side: String = ""
+var base_position := Vector3.ZERO
+var base_rotation := Vector3.ZERO
+var last_camera_rotation := Vector3.ZERO
+var sway_rotation := Vector3.ZERO
+var walk_position := Vector3.ZERO
+var walk_rotation := Vector3.ZERO
+var walk_time := 0.0
 
-func equip_to(side: String) -> void:
-	equipped_side = side
-
-	left_side.visible = side == "left"
-	right_side.visible = side == "right"
 
 func _ready() -> void:
+	player = global.player
 	parent = get_parent() as Node3D
-	base_rotation = rotation
+
 	base_position = position
+	base_rotation = rotation
 
 	if parent:
 		last_camera_rotation = parent.global_rotation
 
+	light = global.player.flashlight_light
+	set_process(false)
+
+
+func equip_to(side: String) -> void:
+	equipped_side = side
+	left_side.visible = side == "left"
+	right_side.visible = side == "right"
+
 
 func _process(delta: float) -> void:
-	if parent == null:
+	if parent == null or player == null:
 		return
 
+	_update_sway(delta)
+	_update_walk_animation(delta)
+
+	rotation = base_rotation + sway_rotation + walk_rotation
+	position = base_position + walk_position
+
+
+func _update_sway(delta: float) -> void:
 	var camera_rotation := parent.global_rotation
 	var rotation_delta := camera_rotation - last_camera_rotation
 
@@ -74,43 +85,15 @@ func _process(delta: float) -> void:
 
 	sway_rotation = sway_rotation.lerp(target_sway, delta * sway_smooth)
 
-	_update_walk_animation(delta)
-
-	rotation = base_rotation + sway_rotation + walk_rotation
-	position = base_position + walk_position
-
-
-func use_item() -> void:
-	light.visible = !light.visible
-
-func enter() -> bool:
-	animation.play("equip")
-	sound.stream = on
-	sound.pitch_scale = randf_range(0.8, 1.2)
-	sound.play()
-	use_lag = true
-	await animation.animation_finished
-	use_item()
-	return true
-
-func exit() -> bool:
-	use_item()
-	sound.stream = off
-	sound.pitch_scale = randf_range(0.8, 1.2)
-	sound.play()
-	use_lag = false
-	animation.play_backwards("equip")
-	return false
 
 func _update_walk_animation(delta: float) -> void:
-	var velocity: Vector3 = global.player.get_velocity() # CHANGE THIS NAME if yours is different
-	var speed := Vector2(velocity.x, velocity.z).length()
+	var speed := Vector2(player.velocity.x, player.velocity.z).length()
 	var move_amount = clamp(speed / walk_speed_for_full_bob, 0.0, 1.0)
 
 	var target_position := Vector3.ZERO
 	var target_rotation := Vector3.ZERO
 
-	if move_amount > 0.05:
+	if move_amount > 0.05 and player.is_on_floor():
 		walk_time += delta * walk_bob_speed
 
 		var side := sin(walk_time)
@@ -127,13 +110,41 @@ func _update_walk_animation(delta: float) -> void:
 	walk_rotation = walk_rotation.lerp(target_rotation, smooth)
 
 
-func _get_global_player_speed() -> float:
-	var velocity = global.player.movement_speed
+func use_item() -> void:
+	set_light(!light_on)
+	_play_sound(on if light_on else off)
 
-	if velocity is Vector3:
-		return Vector2(velocity.x, velocity.z).length()
 
-	if velocity is Vector2:
-		return velocity.length()
+func set_light(value: bool) -> void:
+	light_on = value
+	global.player.request_flashlight_light(self, light_on)
 
-	return 0.0
+
+func enter() -> bool:
+	set_process(true)
+	use_lag = true
+
+	animation.play("equip")
+	_play_sound(on)
+	await animation.animation_finished
+
+	set_light(true)
+	return true
+
+
+func exit() -> bool:
+	set_light(false)
+	use_lag = false
+
+	_play_sound(off)
+	animation.play_backwards("equip")
+	await animation.animation_finished
+
+	set_process(false)
+	return false
+
+
+func _play_sound(stream: AudioStream) -> void:
+	sound.stream = stream
+	sound.pitch_scale = randf_range(0.8, 1.2)
+	sound.play()

@@ -9,6 +9,9 @@ extends CharacterBody3D
 @export var camera_component : CameraComponent
 @export var Postprocess1 : MeshInstance3D
 
+@export var flashlight_light : SpotLight3D
+var flashlight_users: Array[Node] = []
+
 @export var start : Marker3D
 @export var end : Marker3D
 
@@ -166,6 +169,15 @@ func _try_interact() -> void:
 func _clear_interactable() -> void:
 	current_interactable = null
 	global.ui.set_interact_visible(false)
+
+func request_flashlight_light(item: Node, enabled: bool) -> void:
+	if enabled:
+		if not flashlight_users.has(item):
+			flashlight_users.append(item)
+	else:
+		flashlight_users.erase(item)
+
+	flashlight_light.visible = flashlight_users.size() > 0
 
 func camera_bob(delta: float) -> void:
 	var on_floor_moving = is_on_floor() and is_moving

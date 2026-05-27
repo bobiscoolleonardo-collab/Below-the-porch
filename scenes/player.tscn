@@ -21,6 +21,7 @@
 [ext_resource type="Shader" uid="uid://dtwpsl6kpgs0w" path="res://shaders/outline.gdshader" id="12_3v2ag"]
 [ext_resource type="Texture2D" uid="uid://c6bw6mb7pg8ku" path="res://images/Hand1.png" id="12_60mlk"]
 [ext_resource type="Script" uid="uid://bq5h7ie4ygtsu" path="res://scripts/PlayerStates/crouching.gd" id="13_jej6c"]
+[ext_resource type="Texture2D" uid="uid://sky15fu2m3ak" path="res://images/flashlight/FlashlightLightTexture.png" id="14_4ni07"]
 [ext_resource type="Script" uid="uid://8ba4uppqwtho" path="res://scripts/Footsteps.gd" id="15_a38lo"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_3v2ag"]
@@ -229,7 +230,7 @@ radius = 0.1
 [sub_resource type="SphereShape3D" id="SphereShape3D_a38lo"]
 radius = 0.1
 
-[node name="Player" type="CharacterBody3D" unique_id=293408663 node_paths=PackedStringArray("player", "hands", "neck", "camera", "drop_item", "camera_component", "Postprocess1", "start", "end", "ray_cast", "default_collision", "crouch_collision", "crouch_ray")]
+[node name="Player" type="CharacterBody3D" unique_id=293408663 node_paths=PackedStringArray("player", "hands", "neck", "camera", "drop_item", "camera_component", "Postprocess1", "flashlight_light", "start", "end", "ray_cast", "default_collision", "crouch_collision", "crouch_ray")]
 script = ExtResource("1_v0iea")
 player = NodePath("Sounds/Sound")
 hands = NodePath("Neck/ShakePivot/Camera3D/Hands")
@@ -238,6 +239,7 @@ camera = NodePath("Neck/ShakePivot/Camera3D")
 drop_item = NodePath("DropItem")
 camera_component = NodePath("Neck/CameraComponent")
 Postprocess1 = NodePath("PostProcess")
+flashlight_light = NodePath("Neck/ShakePivot/Camera3D/Flashlight")
 start = NodePath("Neck/ShakePivot/Camera3D/SpringArm3D/Start")
 end = NodePath("DropItem/Thing/End")
 ray_cast = NodePath("Neck/ShakePivot/Camera3D/InteractRay")
@@ -549,6 +551,12 @@ spring_length = -0.7
 
 [node name="Start" type="Marker3D" parent="Neck/ShakePivot/Camera3D/SpringArm3D" unique_id=827186336 groups=["Start"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5)
+
+[node name="Flashlight" type="SpotLight3D" parent="Neck/ShakePivot/Camera3D" unique_id=1990223874]
+visible = false
+light_projector = ExtResource("14_4ni07")
+shadow_enabled = true
+spot_range = 9.0
 
 [node name="CameraComponent" type="Node" parent="Neck" unique_id=79813359 node_paths=PackedStringArray("neck", "camera", "hands", "shake_pivot")]
 script = ExtResource("2_g2els")
