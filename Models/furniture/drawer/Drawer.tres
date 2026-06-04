@@ -1,0 +1,41 @@
+[gd_resource type="ArrayMesh" format=4 uid="uid://bg3a5mph4xd1r"]
+
+[ext_resource type="Texture2D" uid="uid://ixmfpfnmbpfy" path="res://Models/furniture/drawer/Drawerthing_Drawer.png" id="1_qvf7f"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bs2m4"]
+resource_name = "Material.001"
+cull_mode = 2
+albedo_texture = ExtResource("1_qvf7f")
+roughness = 0.5
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_txxi0"]
+_surfaces = [{
+"aabb": AABB(-0.99999994, -0.99999946, -0.99999994, 1.9999999, 2, 1.9999999),
+"format": 34896613377,
+"index_count": 84,
+"index_data": PackedByteArray("AAABAAIAAAADAAEAAwAAAAQABAAAAAIAAwAEAAUAAwAGAAEAAwAFAAYABQAEAAcABAACAAcABQAHAAYACAACAAEABgAIAAEAAgAJAAcACQAGAAcABgAKAAgACgAGAAkACAAKAAsACwAKAAkADAACAAgAAgAMAAkACAALAA0ADAAIAA0ACwAJAA4ADgAJAAwADQALAA4ADgAMAA8ADAANAA8ADQAOAA8A"),
+"name": "Material.001",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 16,
+"vertex_data": PackedByteArray("AAAAAP//AAAAAP//AAAAAAAA/////wAAAAAAAAAAAAD//wAA//8AAP//AAAAAAAA/////wAAAAD///////8AAAAK//8ACgAA/vX///71AAD+9f//AAoAAP718xYACgAAAAr///71AAAACvMWAAoAAP718xb+9QAAAArzFv71AAA=")
+}]
+blend_shape_mode = 0
+
+[resource]
+resource_name = "Drawerthing_Cube_002"
+_surfaces = [{
+"aabb": AABB(-0.99999994, -0.99999946, -0.99999994, 1.9999999, 2, 1.9999999),
+"attribute_data": PackedByteArray("SJfZ3WSupcZkrtndSJelxkiXca9krj2YZK5xr0iXPZhIlz2YZK4JgWSuPZhIlwmBLIBxr0iXPZhIl3GvLIA9mJnEia6AxT2YgMVxr2Suca+ZxCWZS6+JrkuvJZlkrj2YCKvZ3UiXpcZIl9ndCKulxgirpcZIl3GvSJelxgirca9Il3GvCKs9mEiXPZgIq3GvSJc9mAirCYFIlwmBCKs9mCyAca9Ilz2YLIA9mEiXca//////GIAxgP//MYAYgP//"),
+"format": 34896613399,
+"index_count": 84,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkADAANAA4ADAAPAA0AEAARABIAEwAQABIAFAARABAAEwAVABAAEQAUABYAFQATABYAEQAWABcAFgATABcAGAAZABoAGAAbABkAHAAdAB4AHAAfAB0AIAAhACIAIAAjACEAJAAlACYAJAAnACUAKAApACoAKAArACkALAAtAC4ALAAvAC0A"),
+"material": SubResource("StandardMaterial3D_bs2m4"),
+"name": "Material.001",
+"primitive": 3,
+"uv_scale": Vector4(2.0050082, 1.9969398, 0, 0),
+"vertex_count": 48,
+"vertex_data": PackedByteArray("AAAAAP//VNUAAP//AABU1QAA/////1TVAAAAAAAAVNX//wAAAABU1f///////1TV/////wAAVNX//wAA//9U1f//AAD///+/AAD//////7//////////vwAAAAD///+/AAAAAAAA/7///wAA////v///AAAAAP+/AAAAAP///78ACv//AAr//wAA////////AAD//wAA////////AAD//wAK///+9f///vX//wAK///+9f///vX/////////////AAr///71qioACvMWAAqqKgAK8xb+9aoqAAr//wAKqioACv//AAr/P/718xYACv8/AArzFgAK/z/+9f//AAr/P/718xYACqoq/vX///71qir+9fMW/vWqKv71//8ACqoq/vXzFv71AAAACv///vUAAAAK8xb+9QAA/vX///71AAAACvMWAAr/P/718xb+9f8/AArzFv71/z/+9fMWAAr/PwAAAAAAAP///////wAA//8AAP//AAD/////AAAAAP//VNVU1VTVVNVU1VTVVNVU1aoqqiqqKqoqqiqqKqoqqir/////////////////////AAD/fwAA/38AAP9/AAD/f/9//7//f/+//3//v/9//7//f/+//3//v/9//7//f/+/qiqqKqoqqiqqKqoqqiqqKv////////////////////9U1VTVVNVU1VTVVNVU1VTV/7//v/+//7//v/+//7//v////3////9/////f////3//f////3////9/////f///")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_txxi0")

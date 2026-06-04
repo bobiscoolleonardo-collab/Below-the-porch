@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode cull_disabled, depth_prepass_alpha, depth_test_disabled;
+render_mode cull_disabled, depth_test_disabled;
 
 uniform sampler2D sprite_texture : source_color, filter_nearest;
 uniform vec2 atlas_size;
@@ -48,7 +48,9 @@ void fragment()
 
 	vec4 color = texture(sprite_texture, offset_uv);
 	ALBEDO = vec3(max(color.r, damage_color.r), max(color.g, damage_color.g), max(color.b, damage_color.b));
-	ALPHA = color.a;
+	if (color.a < 0.01) {
+		discard;
+	}
 }
 
 void light()

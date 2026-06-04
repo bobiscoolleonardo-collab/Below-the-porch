@@ -12,7 +12,7 @@ shader = ExtResource("3_v5nh6")
 shader_parameter/shine_color = Color(1, 1, 1, 1)
 shader_parameter/shine_speed = 3.0000001425
 shader_parameter/shine_width = 0.400000019
-shader_parameter/cycle_interval = 6.000000285
+shader_parameter/cycle_interval = 4.00000019
 shader_parameter/angle_fade = 1.0
 shader_parameter/x_direction = 4.7499999933364734e-08
 shader_parameter/y_direction = -1.0
@@ -26,6 +26,7 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0
 script = ExtResource("1_wexaj")
 item_icon = ExtResource("2_0oats")
 held_scene = ExtResource("3_lvbso")
+pickup_scene = ExtResource("3_lvbso")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1582406576]
 

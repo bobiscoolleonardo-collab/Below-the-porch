@@ -1,8 +1,8 @@
 shader_type sky;
 render_mode use_half_res_pass, use_debanding;
 
-uniform vec4 baseColor : source_color = vec4(0.0, 0.64, 0.84, 1.0);
-uniform vec4 horizonColor : source_color = vec4(0.36, 0.59, 0.86, 1.0);
+global uniform vec4 sky_color;
+global uniform vec4 horizon_color;
 
 uniform float horizonHeight : hint_range(-1.0, 1.0, 0.01) = -0.2;
 uniform float rayleighCoefficient : hint_range(0.0, 1.0, 0.01) = 0.2;
@@ -20,7 +20,7 @@ uniform float sky_intensity : hint_range(0.0, 1.0, 0.1);
 // Calculate the total amount of light scattered by Rayleigh scattering for all lights
 vec3 rayleighScattering(float cos_theta) {
 	float rayleighSunPhase = 0.75 * (1.0 + cos_theta * cos_theta);
-	vec3 rayleighColor = horizonColor.rgb * rayleighCoefficient * rayleighSunPhase;
+	vec3 rayleighColor = horizon_color.rgb * rayleighCoefficient * rayleighSunPhase;
 	
 	return rayleighColor;
 }
@@ -28,7 +28,7 @@ vec3 rayleighScattering(float cos_theta) {
 // Calculate the total amount of light scattered by Mie scattering for all lights
 vec3 mieScattering(float cos_theta, float g) {
 	float mieSunPhase = ((1.0 - g * g) / (4.0 * PI)) * (1.0 + g * g - 2.0 * g * cos_theta) / pow(1.0 + g * g - 2.0 * g * cos_theta, 1.5);
-	vec3 mieColor = horizonColor.rgb * mieCoefficient * mieSunPhase;
+	vec3 mieColor = horizon_color.rgb * mieCoefficient * mieSunPhase;
 	
 	return mieColor;
 }
@@ -56,7 +56,7 @@ void sky() {
 	vec4 clouds = mix(texture(cloudTexture, texCoords), vec4(0), texture(cloudCoverageTexture, texCoords));
 	float colorGradient = EYEDIR.y - horizonHeight;
 	vec3 skyColor;
-	skyColor = mix(horizonColor.rgb, baseColor.rgb, colorGradient);
+	skyColor = mix(horizon_color.rgb, sky_color.rgb, colorGradient);
 	skyColor = mix(skyColor.rgb, sun.rgb, sun.a);
 	skyColor = mix(skyColor.rgb, clouds.xyz, clouds.rgb * sky_intensity);
 	

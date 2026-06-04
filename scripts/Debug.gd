@@ -6,9 +6,9 @@ func _ready():
 	global.debug = self
 	visible = false 
 
-func _process(delta):
+func _process(_delta):
 	if visible:
-		add_property("FPS", "%.2f" % (1.0/delta), 1)
+		add_property("FPS", int(Engine.get_frames_per_second()), 1)
 
 func _input(event):
 	if event.is_action_pressed("debug"):

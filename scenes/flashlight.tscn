@@ -4,38 +4,43 @@
 [ext_resource type="Script" uid="uid://dhxvbdsgamvna" path="res://scripts/Interactables/flashlight/flashlight.gd" id="1_17r2w"]
 [ext_resource type="Shader" uid="uid://bcjy7ln6x08kg" path="res://shaders/sprite_light.gdshader" id="2_x32u1"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_fhhjx"]
-render_priority = 10
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bh8a8"]
+render_priority = 0
 shader = ExtResource("2_x32u1")
 shader_parameter/sprite_texture = ExtResource("1_5higp")
 shader_parameter/atlas_size = Vector2(1, 1)
-shader_parameter/highlight_amount = 0.05
+shader_parameter/highlight_amount = 0.02
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_o7kai"]
+material = SubResource("ShaderMaterial_bh8a8")
+flip_faces = true
+size = Vector2(0.6, 0.6)
+orientation = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bis5n"]
+render_priority = 0
+shader = ExtResource("2_x32u1")
+shader_parameter/sprite_texture = ExtResource("1_5higp")
+shader_parameter/atlas_size = Vector2(1, 1)
+shader_parameter/highlight_amount = 0.02
+
+[sub_resource type="QuadMesh" id="QuadMesh_bis5n"]
+material = SubResource("ShaderMaterial_bis5n")
+size = Vector2(0.6, 0.6)
 
 [sub_resource type="Animation" id="Animation_17r2w"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Right:position")
+tracks/0/path = NodePath(".:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0.4243108, 0.0044072866, -0.21263233)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Left:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(-0.43123388, 0.004, -0.21274352)]
+"values": [Vector3(0, 0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_wxoxw"]
@@ -44,26 +49,14 @@ length = 0.3
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Right:position")
+tracks/0/path = NodePath(".:position")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.3),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(0.4243108, -0.60972834, -0.21263233), Vector3(0.4243108, 0.0044072866, -0.21263233)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Left:position")
-tracks/1/interp = 2
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(-0.43123388, -0.6101356, -0.21274352), Vector3(-0.43123388, 0.004, -0.21274352)]
+"values": [Vector3(0, -0.64005065, 0), Vector3(0, 0, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_fhhjx"]
@@ -76,22 +69,18 @@ _data = {
 script = ExtResource("1_17r2w")
 walk_bob_speed = 5.0
 
-[node name="Right" type="Sprite3D" parent="." unique_id=1503388592]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4243108, 0.0044072866, -0.21263233)
-material_override = SubResource("ShaderMaterial_fhhjx")
+[node name="Left" type="MeshInstance3D" parent="." unique_id=881526787]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -0.43123388, 0.004, -0.23115474)
 cast_shadow = 0
-pixel_size = 0.0012
-texture = ExtResource("1_5higp")
+mesh = SubResource("PlaneMesh_o7kai")
 
-[node name="Left" type="Sprite3D" parent="." unique_id=443298181]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.43123388, 0.004, -0.21274352)
-material_override = SubResource("ShaderMaterial_fhhjx")
+[node name="Right" type="MeshInstance3D" parent="." unique_id=1612160531]
+transform = Transform3D(1.0000001, -2.6077032e-08, -1.4901161e-08, -2.2351742e-08, 0.9999999, 0, 0, 1.8626451e-08, 1, 0.4243108, 0.0044072866, -0.23104364)
 cast_shadow = 0
-flip_h = true
-pixel_size = 0.0012
-texture = ExtResource("1_5higp")
+mesh = SubResource("QuadMesh_bis5n")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=373636606]
 libraries/ = SubResource("AnimationLibrary_fhhjx")
 
 [node name="Sound" type="AudioStreamPlayer3D" parent="." unique_id=687657163]
+volume_db = -10.0

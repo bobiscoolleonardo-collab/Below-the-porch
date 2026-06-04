@@ -1,6 +1,8 @@
 shader_type spatial;
 render_mode blend_mix, depth_prepass_alpha, cull_disabled, unshaded, shadows_disabled;
 
+global uniform float cloud_intensity;
+
 uniform sampler2D cloud_noise : source_color, repeat_enable, filter_linear_mipmap;
 
 uniform vec4 cloud_color : source_color = vec4(1.0, 0.86, 0.72, 1.0);
@@ -58,6 +60,6 @@ void fragment() {
 	vec3 final_color = mix(cloud_shadow_color.rgb, cloud_color.rgb, sun_light);
 	final_color = mix(final_color, cloud_color.rgb, 1.0 - shadow_strength);
 
-	ALBEDO = final_color;
+	ALBEDO = final_color * cloud_intensity;
 	ALPHA = alpha;
 }

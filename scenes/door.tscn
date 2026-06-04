@@ -1,0 +1,61 @@
+[gd_scene format=3 uid="uid://k5pg636kpflq"]
+
+[ext_resource type="Script" uid="uid://yd1c0ilqq1co" path="res://scripts/Interactables/door/doorcontroller.gd" id="1_18pbm"]
+[ext_resource type="Script" uid="uid://ctsbijdoobj4x" path="res://scripts/Interactables/door/doorinteract.gd" id="1_hpvv5"]
+[ext_resource type="ArrayMesh" uid="uid://cqm31vkbl27ft" path="res://Models/door/Door2.tres" id="3_18pbm"]
+[ext_resource type="ArrayMesh" uid="uid://c7o1wxjp5ptk4" path="res://Models/door/DoorFrame.tres" id="3_la1wf"]
+[ext_resource type="ArrayMesh" uid="uid://dkd7qkbi2ohua" path="res://Models/door/Handle.tres" id="4_18pbm"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hpvv5"]
+size = Vector3(1, 2, 0.1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_la1wf"]
+size = Vector3(0.021240234, 0.021942139, 0.020317078)
+
+[node name="Door" type="Node3D" unique_id=454654328 node_paths=PackedStringArray("pivot", "sound", "handle")]
+script = ExtResource("1_18pbm")
+pivot = NodePath("Pivot")
+sound = NodePath("Sound")
+handle = NodePath("Pivot/StaticBody3D/Handle")
+
+[node name="Pivot" type="Node3D" parent="." unique_id=498180876 node_paths=PackedStringArray("door_controller")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1, 0)
+script = ExtResource("1_hpvv5")
+door_controller = NodePath("..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Pivot" unique_id=1113334011]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pivot/StaticBody3D" unique_id=832142056]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_hpvv5")
+
+[node name="Door" type="MeshInstance3D" parent="Pivot/StaticBody3D" unique_id=232170775]
+transform = Transform3D(-1.0053619e-08, 0, 0.23, 0, 0.248, 0, -0.23, 0, -1.0053619e-08, -0.5, 0, 0)
+mesh = ExtResource("3_18pbm")
+
+[node name="Handle" type="MeshInstance3D" parent="Pivot/StaticBody3D" unique_id=549382488]
+transform = Transform3D(-8.742278e-07, -30, 1.3113416e-06, 0, -1.3113416e-06, -30, 20, -1.3113416e-06, 5.732056e-14, 0.3902401, 0.75358623, 0)
+mesh = ExtResource("4_18pbm")
+
+[node name="Frame" type="StaticBody3D" parent="." unique_id=1205352414]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1, 0)
+
+[node name="Frame" type="MeshInstance3D" parent="Frame" unique_id=755347465]
+transform = Transform3D(-3.278354e-07, 1.95, 4.3274276e-06, 0, -8.523721e-08, 99, 7.5, 8.523721e-08, 1.8915787e-13, 0.5, -1, 0)
+mesh = ExtResource("3_la1wf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Frame" unique_id=1049130828]
+transform = Transform3D(-3.278354e-07, 1.95, 4.3274276e-06, 0, -8.523721e-08, 99, 7.5, 8.523721e-08, 1.8915787e-13, 1.0097268, 0.0117378235, -0.0045776144)
+shape = SubResource("BoxShape3D_la1wf")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Frame" unique_id=293918631]
+transform = Transform3D(-3.278354e-07, 1.95, 4.3274276e-06, 0, -8.523721e-08, 99, 7.5, 8.523721e-08, 1.8915787e-13, -0.0054712296, 0.0117378235, -0.0045776144)
+shape = SubResource("BoxShape3D_la1wf")
+
+[node name="Sound" type="AudioStreamPlayer3D" parent="." unique_id=1276752795]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0983862, 0)
+max_distance = 20.0
+
+[node name="Marker3D" type="Marker3D" parent="." unique_id=90484205]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.55601054)

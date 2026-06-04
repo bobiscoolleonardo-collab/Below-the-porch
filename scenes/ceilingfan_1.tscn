@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://cqrh5w25er3ek"]
+
+[ext_resource type="ArrayMesh" uid="uid://d1ukxlfv5wkaj" path="res://Models/furniture/ceiling fan/base2.tres" id="1_1ry1w"]
+[ext_resource type="Script" uid="uid://cduufoqhinca7" path="res://scripts/ceilingfan.gd" id="1_7j8fb"]
+[ext_resource type="ArrayMesh" uid="uid://chnynm0wskik7" path="res://Models/furniture/ceiling fan/fan2.tres" id="2_7j8fb"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_xgt6o"]
+radius = 10.0
+
+[node name="Ceilingfan1" type="Node3D" unique_id=1011766830 node_paths=PackedStringArray("fan")]
+script = ExtResource("1_7j8fb")
+fan = NodePath("Fan")
+
+[node name="Base" type="MeshInstance3D" parent="." unique_id=1770335608]
+transform = Transform3D(80, 0, 0, 0, -3.4969114e-06, 80, 0, -80, -3.4969114e-06, 0, 0, 0)
+mesh = ExtResource("1_1ry1w")
+
+[node name="Fan" type="MeshInstance3D" parent="." unique_id=248433299]
+transform = Transform3D(80, 0, 0, 0, -3.4969112e-06, 80, 0, -80, -3.4969112e-06, 0, 0, 0)
+mesh = ExtResource("2_7j8fb")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=158362352]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1135710895]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.5420258, 0)
+shape = SubResource("SphereShape3D_xgt6o")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=986914779]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, -0.16929018, 0)
+light_color = Color(1, 1, 0.80784315, 1)
+shadow_enabled = true
+distance_fade_enabled = true
+distance_fade_begin = 20.0
+distance_fade_shadow = 30.0
+spot_range = 4.0
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]

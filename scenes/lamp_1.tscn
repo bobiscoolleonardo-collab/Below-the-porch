@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://c2627hhrf43kk"]
+
+[ext_resource type="Script" uid="uid://c7vgwnjvfmimt" path="res://scripts/Interactables/lamp.gd" id="1_nlk7w"]
+[ext_resource type="ArrayMesh" uid="uid://cbqanbm7fdrx5" path="res://Models/furniture/lamp/lamp1.tres" id="1_sabeu"]
+[ext_resource type="AudioStream" uid="uid://bm081mxytt77k" path="res://sounds/Lamp.wav" id="3_2h41k"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sabeu"]
+size = Vector3(0.22160764, 0.6819987, 0.22096677)
+
+[node name="StaticBody3D" type="StaticBody3D" unique_id=1821448355 node_paths=PackedStringArray("light_1", "light_2", "sound")]
+script = ExtResource("1_nlk7w")
+light_1 = NodePath("lamp1/SpotLight3D")
+light_2 = NodePath("lamp1/SpotLight3D2")
+sound = NodePath("Sound")
+
+[node name="lamp1" type="MeshInstance3D" parent="." unique_id=960703067]
+mesh = ExtResource("1_sabeu")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="lamp1" unique_id=671249025]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, -0.076876864, 0)
+light_color = Color(1, 1, 0.8862745, 1)
+shadow_enabled = true
+spot_range = 2.0
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="lamp1" unique_id=1671390684]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.43528777, 0)
+light_color = Color(1, 1, 0.8862745, 1)
+shadow_enabled = true
+spot_range = 1.5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1657536467]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0055291727, 0.053278774, 0.0011474118)
+shape = SubResource("BoxShape3D_sabeu")
+
+[node name="Sound" type="AudioStreamPlayer3D" parent="." unique_id=1052302619]
+stream = ExtResource("3_2h41k")

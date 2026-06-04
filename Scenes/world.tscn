@@ -1,9 +1,19 @@
 [gd_scene format=3 uid="uid://dc3uo1lv6kwhk"]
 
+[ext_resource type="Script" uid="uid://6sk6xopstwnc" path="res://scripts/lighting.gd" id="1_71j4m"]
 [ext_resource type="PackedScene" uid="uid://bmo6b76vgnbyq" path="res://scenes/player.tscn" id="1_a02cp"]
 [ext_resource type="Shader" uid="uid://b21ph46u87fuk" path="res://shaders/sky.gdshader" id="1_go701"]
 [ext_resource type="Shader" uid="uid://cvsyvi30b6mw0" path="res://shaders/clouds.gdshader" id="2_4wyf3"]
 [ext_resource type="PackedScene" uid="uid://dxffaadv72i7l" path="res://scenes/flashlight_pickup.tscn" id="4_k0juu"]
+[ext_resource type="Texture2D" uid="uid://bfrxc8hhhojwx" path="res://images/SkyNight.jpg" id="4_qfnet"]
+[ext_resource type="Texture2D" uid="uid://1vcud1mu2rye" path="res://images/texture_07.png" id="5_7r4gi"]
+[ext_resource type="PackedScene" uid="uid://k5pg636kpflq" path="res://scenes/door.tscn" id="7_i7141"]
+[ext_resource type="PackedScene" uid="uid://dwif53fxpvtdj" path="res://scenes/street_lamp.tscn" id="8_4mrxx"]
+[ext_resource type="PackedScene" uid="uid://drnj82na5ubmi" path="res://scenes/bed_1.tscn" id="10_w7kh3"]
+[ext_resource type="PackedScene" uid="uid://c2627hhrf43kk" path="res://scenes/lamp_1.tscn" id="12_q5onr"]
+[ext_resource type="PackedScene" uid="uid://fb3n6w24ko03" path="res://scenes/drawer_base.tscn" id="13_jhx03"]
+[ext_resource type="PackedScene" uid="uid://bairey5eipha" path="res://scenes/chair_01.tscn" id="13_o8fc1"]
+[ext_resource type="PackedScene" uid="uid://cqrh5w25er3ek" path="res://scenes/ceilingfan_1.tscn" id="14_o8fc1"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_rwgxs"]
 noise_type = 0
@@ -20,13 +30,11 @@ seamless = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qfnet"]
 shader = ExtResource("1_go701")
-shader_parameter/baseColor = Color(0.5416053, 0.3112365, 0.16703805, 1)
-shader_parameter/horizonColor = Color(0.46319747, 0.22460961, 0.05777941, 1)
-shader_parameter/horizonHeight = -0.2
-shader_parameter/rayleighCoefficient = 0.2
+shader_parameter/horizonHeight = -1.0
+shader_parameter/rayleighCoefficient = 0.999999977648
 shader_parameter/mieCoefficient = 0.0
 shader_parameter/mieEccentricity = 0.8
-shader_parameter/sunDiskScale = 0.0999999977648
+shader_parameter/sunDiskScale = 0.2
 shader_parameter/sunSmoothing = 0.5
 shader_parameter/cloudTexture = SubResource("NoiseTexture2D_71j4m")
 shader_parameter/cloudCoverageTexture = SubResource("NoiseTexture2D_4wyf3")
@@ -38,10 +46,14 @@ sky_material = SubResource("ShaderMaterial_qfnet")
 [sub_resource type="Environment" id="Environment_fo5ed"]
 background_mode = 2
 sky = SubResource("Sky_i7141")
-ambient_light_source = 3
+ambient_light_source = 2
+ambient_light_color = Color(0.976, 0.678, 0.459, 1)
 ambient_light_energy = 0.3
 reflected_light_source = 2
 tonemap_mode = 3
+ssao_enabled = true
+ssil_intensity = 0.5
+fog_light_color = Color(0.15016034, 0.16719589, 0.19274914, 1)
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.01
 
@@ -72,7 +84,6 @@ shader_parameter/shadow_strength = 0.35
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_4mrxx"]
 material = SubResource("ShaderMaterial_i7141")
-flip_faces = true
 size = Vector2(2000, 2000)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_4wyf3"]
@@ -106,7 +117,30 @@ material = SubResource("ShaderMaterial_71j4m")
 flip_faces = true
 size = Vector2(2000, 2000)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i7141"]
+diffuse_mode = 3
+specular_mode = 2
+disable_specular_occlusion = true
+albedo_texture = ExtResource("4_qfnet")
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 600.0
+emission_operator = 1
+emission_texture = ExtResource("4_qfnet")
+texture_filter = 2
+
+[sub_resource type="SphereMesh" id="SphereMesh_71j4m"]
+material = SubResource("StandardMaterial3D_i7141")
+flip_faces = true
+radius = 800.0
+height = 1600.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w7kh3"]
+albedo_texture = ExtResource("5_7r4gi")
+uv1_scale = Vector3(10, 10, 10)
+
 [sub_resource type="PlaneMesh" id="PlaneMesh_yp4wr"]
+material = SubResource("StandardMaterial3D_w7kh3")
 size = Vector2(30, 30)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_yp4wr"]
@@ -124,29 +158,54 @@ size = Vector3(5, 0.1, 2)
 [sub_resource type="BoxShape3D" id="BoxShape3D_k0juu"]
 size = Vector3(5, 0.1, 2)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qfnet"]
+albedo_color = Color(0.3726815, 0.15351734, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_qfnet"]
+material = SubResource("StandardMaterial3D_qfnet")
+size = Vector3(10, 0.1, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i7141"]
+size = Vector3(10, 0.05, 10)
+
+[sub_resource type="BoxMesh" id="BoxMesh_7r4gi"]
+size = Vector3(4, 0.2, 4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7r4gi"]
+size = Vector3(4, 0.2, 4)
+
 [node name="World" type="Node3D" unique_id=1933754925]
 
-[node name="Lighting" type="Node3D" parent="." unique_id=95366988]
+[node name="Lighting" type="Node3D" parent="." unique_id=95366988 node_paths=PackedStringArray("environment", "sun", "sky_box")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6511605, 0)
+script = ExtResource("1_71j4m")
+environment = NodePath("WorldEnvironment")
+sun = NodePath("DirectionalLight3D")
+sky_box = NodePath("SkySphere")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Lighting" unique_id=182372352]
 transform = Transform3D(0.9627154, -0.15179886, 0.22391123, 0, 0.8277177, 0.5611447, -0.27051646, -0.54022264, 0.7968566, 0, 0, 0)
 light_volumetric_fog_energy = 0.2
 light_bake_mode = 1
 shadow_enabled = true
+sky_mode = 1
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Lighting" unique_id=1579030100]
 environment = SubResource("Environment_fo5ed")
 
 [node name="cloudLayer1" type="MeshInstance3D" parent="Lighting" unique_id=2095152497]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 67.255165, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 118.8971, 0)
 cast_shadow = 0
 mesh = SubResource("PlaneMesh_4mrxx")
 
 [node name="cloudLayer2" type="MeshInstance3D" parent="Lighting" unique_id=698507936]
-transform = Transform3D(-4.3711385e-08, 0, -0.99999994, 0, 1, 0, 0.99999994, 0, -4.3711385e-08, 0, 89.89951, 0)
+transform = Transform3D(-4.3711385e-08, 0, -0.99999994, 0, 1, 0, 0.99999994, 0, -4.3711385e-08, 0, 141.54146, 0)
 cast_shadow = 0
 mesh = SubResource("PlaneMesh_qfnet")
+
+[node name="SkySphere" type="MeshInstance3D" parent="Lighting" unique_id=929904891]
+visible = false
+mesh = SubResource("SphereMesh_71j4m")
 
 [node name="floor" type="StaticBody3D" parent="." unique_id=1928289312]
 
@@ -157,7 +216,7 @@ mesh = SubResource("PlaneMesh_yp4wr")
 shape = SubResource("BoxShape3D_yp4wr")
 
 [node name="Player" parent="." unique_id=293408663 instance=ExtResource("1_a02cp")]
-transform = Transform3D(-0.99999994, 0, -8.742277e-08, 0, 1, 0, 8.742277e-08, 0, -0.99999994, 0, 0.00049972534, 0)
+transform = Transform3D(0.9930642, 0, 0.11757228, 0, 1, 0, -0.11757228, 0, 0.9930642, 0, 0.00049972534, 0.04325545)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=2040650422]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3312464, 4.607521)
@@ -179,8 +238,44 @@ mesh = SubResource("BoxMesh_4wyf3")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.4227333, -0.4992404)
 shape = SubResource("BoxShape3D_k0juu")
 
-[node name="Flashlight_Pickup" parent="." unique_id=141800099 instance=ExtResource("4_k0juu")]
-transform = Transform3D(0.53747624, 0.84238726, -0.03876828, 0, 0.04597326, 0.9989427, 0.8432789, -0.536908, 0.024709536, 0, 0.04782927, -2.1681335)
+[node name="StaticBody3D3" type="StaticBody3D" parent="." unique_id=1713838337 groups=["Wood"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6.330042)
 
-[node name="Flashlight_Pickup2" parent="." unique_id=385052401 instance=ExtResource("4_k0juu")]
-transform = Transform3D(0.53747624, 0.84238726, -0.03876828, 0, 0.04597326, 0.9989427, 0.8432789, -0.536908, 0.024709536, -0.94841945, 0.04782927, -2.1681335)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D3" unique_id=1676960842]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.20547)
+mesh = SubResource("BoxMesh_qfnet")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3" unique_id=1664771693]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.20547)
+shape = SubResource("BoxShape3D_i7141")
+
+[node name="StaticBody3D4" type="StaticBody3D" parent="." unique_id=1828946721 groups=["Carpet"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.041679323, -6.330042)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D4" unique_id=424055368]
+mesh = SubResource("BoxMesh_7r4gi")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D4" unique_id=563441672]
+shape = SubResource("BoxShape3D_7r4gi")
+
+[node name="Door" parent="." unique_id=454654328 instance=ExtResource("7_i7141")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2858121, 0.025000036, -3.7817633)
+
+[node name="StreetLamp" parent="." unique_id=2039025961 instance=ExtResource("8_4mrxx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.4898305, 0, 0)
+
+[node name="Bed1" parent="." unique_id=2123957930 instance=ExtResource("10_w7kh3")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -1.2209502, 0.45780098, -6.8755794)
+
+[node name="lamp1" parent="." unique_id=960703067 instance=ExtResource("12_q5onr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2583172, 0.9460412, -7.7692194)
+
+[node name="DrawerBase" parent="." unique_id=457349648 instance=ExtResource("13_jhx03")]
+transform = Transform3D(-0.3, 0, -4.5298744e-08, 0, 0.3, 0, 4.5298744e-08, 0, -0.3, -0.26565716, 0.35832065, -7.776139)
+drawer_items = Array[PackedScene]([ExtResource("4_k0juu")])
+
+[node name="Chair01" parent="." unique_id=474914786 instance=ExtResource("13_o8fc1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.599389, 0.24363011, -5.0212784)
+
+[node name="Ceilingfan1" parent="." unique_id=1011766830 instance=ExtResource("14_o8fc1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.79311156, 2.6992238, -6.2910366)

@@ -1,0 +1,14 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://b4yjh022ocf0m"]
+
+[ext_resource type="Texture2D" uid="uid://crteq5cqrvss7" path="res://Models/lightcone/Gradiant.png" id="1_1usfj"]
+
+[resource]
+resource_name = "Material.001"
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.47940308, 0.46858656, 7.70092e-07, 1)
+albedo_texture = ExtResource("1_1usfj")
+texture_filter = 2

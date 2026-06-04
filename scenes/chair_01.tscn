@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://bairey5eipha"]
+
+[ext_resource type="ArrayMesh" uid="uid://dvvpe78uicgwk" path="res://Models/furniture/Chairs/Chair01.tres" id="1_e1rbn"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_e1rbn"]
+size = Vector3(0.0059088473, 0.0050297333, 0.0079072425)
+
+[node name="Chair01" type="StaticBody3D" unique_id=474914786]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1532030912]
+transform = Transform3D(80, 0, 0, 0, -3.4969112e-06, 80, 0, -80, -3.4969112e-06, 0, 0.3, 0)
+mesh = ExtResource("1_e1rbn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1115544835]
+transform = Transform3D(80, 0, 0, 0, -3.4969112e-06, 80, 0, -80, -3.4969112e-06, 0.06804177, 0.13098022, -2.9864815e-08)
+shape = SubResource("BoxShape3D_e1rbn")

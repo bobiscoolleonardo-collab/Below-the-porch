@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://dwif53fxpvtdj"]
+
+[ext_resource type="ArrayMesh" uid="uid://4euejruvplaj" path="res://Models/streetlamp/StreetLamp.tres" id="1_l6nu6"]
+[ext_resource type="ArrayMesh" uid="uid://elc0rjvcvvuj" path="res://Models/lightcone/lightcone.tres" id="2_nm1yq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nm1yq"]
+size = Vector3(0.1656433, 1.7827563, 0.1313666)
+
+[node name="StreetLamp" type="StaticBody3D" unique_id=2039025961]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1095263505]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.48308742, 2.625, 0)
+mesh = ExtResource("1_l6nu6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=6532657]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.054298624, 0.8819959, 0.0035441145)
+shape = SubResource("BoxShape3D_nm1yq")
+
+[node name="Light" type="Node3D" parent="." unique_id=2025288243]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1087954, 4.1438885, 0)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Light" unique_id=468328926]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, -0.06976843, 0)
+light_color = Color(0.99751264, 0.9999996, 0.6509582, 1)
+light_volumetric_fog_energy = 2.0
+light_bake_mode = 1
+shadow_enabled = true
+distance_fade_enabled = true
+distance_fade_begin = 20.0
+distance_fade_shadow = 30.0
+spot_range = 6.0
+spot_angle = 30.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Light" unique_id=1324745716]
+transform = Transform3D(75.105, 0, 0, 0, -3.282944e-06, 118.8, 0, -75.105, -5.1929132e-06, -0.00033044815, -1.1437533, 0)
+cast_shadow = 0
+mesh = ExtResource("2_nm1yq")

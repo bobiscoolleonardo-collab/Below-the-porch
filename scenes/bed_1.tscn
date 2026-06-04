@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://drnj82na5ubmi"]
+
+[ext_resource type="ArrayMesh" uid="uid://beljnslfprl1f" path="res://Models/furniture/beds/bed.tres" id="1_f0e5s"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1rug5"]
+size = Vector3(2.1727314, 0.6545476, 1.1643358)
+
+[node name="Bed1" type="StaticBody3D" unique_id=2123957930]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=377613266]
+mesh = ExtResource("1_f0e5s")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1493814223]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.025694847, -0.07220656, 0.0034404397)
+shape = SubResource("BoxShape3D_1rug5")

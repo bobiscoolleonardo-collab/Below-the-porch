@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://c2yve15myewqi"]
+
+[ext_resource type="ArrayMesh" uid="uid://dtttojixhoemd" path="res://Models/furniture/tv/tv1.tres" id="1_7owgf"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5p00u"]
+size = Vector3(0.36188278, 0.36118305, 0.39159834)
+
+[node name="tv1" type="StaticBody3D" unique_id=1636936318]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=517016872]
+mesh = ExtResource("1_7owgf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=756512215]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.008611292, 0.009336531)
+shape = SubResource("BoxShape3D_5p00u")
